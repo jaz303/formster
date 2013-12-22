@@ -80,13 +80,15 @@ module Formster
       def self.define_field_helper(helper, meta)
 
         option_arg_position   = meta[0]
-        archetype             = meta[1]
+        html_arg_position     = meta[1]
+        archetype             = meta[2]
 
         helper_code = <<-CODE
           alias naked_#{helper} #{helper}
 
           def #{helper}(*args, &block)
             options = (args[#{option_arg_position}] ||= {})
+            html_options = (args[#{html_arg_position}] ||= {})
         CODE
 
         case archetype
@@ -101,16 +103,17 @@ module Formster
 
               lbl = args[0].to_s.humanize if lbl === true
 
-              help = options.delete(:help_block)
+              help = options.delete(:help)
 
-              options[:class] ||= ''
-              options[:class] << ' form-control'
+              html_options[:class] ||= ''
+              html_options[:class] << ' form-control'
 
               html  = "<div class='form-group'>"
               html << label(args[0], lbl) if lbl
               html << naked_#{helper}(*args, &block)
               html << "<p class='help-block'>\#{help}</p>" if help
               html << "</div>"
+
           CODE
         when :checkbox
           helper_code << <<-CODE
@@ -202,33 +205,33 @@ module Formster
       :horizontal   => HorizontalFormBuilder
     }
 
-    { :check_box                  => [1, :checkbox],
-      :color_field                => [1, :input],
-      :date_field                 => [1, :input],
-      :datetime_field             => [1, :input],
-      :datetime_local_field       => [1, :input],
-      :email_field                => [1, :input],
-      :file_field                 => [1, :file],
-      :month_field                => [1, :input],
-      :number_field               => [1, :input],
-      :password_field             => [1, :input],
-      :phone_field                => [1, :input],
-      :radio_button               => [2, :radio],
-      :range_field                => [1, :input],
-      :search_field               => [1, :input],
-      :telephone_field            => [1, :input],
-      :text_area                  => [1, :textarea],
-      :text_field                 => [1, :input],
-      :time_field                 => [1, :input],
-      :url_field                  => [1, :input],
-      :week_field                 => [1, :input],
+    { :check_box                  => [1, 1, :checkbox],
+      :color_field                => [1, 1, :input],
+      :date_field                 => [1, 1, :input],
+      :datetime_field             => [1, 1, :input],
+      :datetime_local_field       => [1, 1, :input],
+      :email_field                => [1, 1, :input],
+      :file_field                 => [1, 1, :file],
+      :month_field                => [1, 1, :input],
+      :number_field               => [1, 1, :input],
+      :password_field             => [1, 1, :input],
+      :phone_field                => [1, 1, :input],
+      :radio_button               => [2, 2, :radio],
+      :range_field                => [1, 1, :input],
+      :search_field               => [1, 1, :input],
+      :telephone_field            => [1, 1, :input],
+      :text_area                  => [1, 1, :textarea],
+      :text_field                 => [1, 1, :input],
+      :time_field                 => [1, 1, :input],
+      :url_field                  => [1, 1, :input],
+      :week_field                 => [1, 1, :input],
 
-      :select                     => [4, :select],
-      :collection_select          => [4, :select],
-      :date_select                => [1, :select],
-      :datetime_select            => [1, :select],
-      :grouped_collection_select  => [6, :select],
-      :time_select                => [1, :select]
+      :select                     => [2, 3, :select],
+      :collection_select          => [4, 4, :select],
+      :date_select                => [1, 1, :select],
+      :datetime_select            => [1, 1, :select],
+      :grouped_collection_select  => [6, 6, :select],
+      :time_select                => [1, 1, :select]
     }.each do |method, meta|
       BaseFormBuilder.register_field_helper(method, meta)
     end
