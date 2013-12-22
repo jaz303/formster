@@ -48,10 +48,12 @@ module Formster
       end
 
       def self.inherited(subclass)
-        @@helpers.each do |helper|
-          subclass.define_field_helper(helper[0], helper[1])
+        if subclass.superclass == BaseFormBuilder
+          @@helpers.each do |helper|
+            subclass.define_field_helper(helper[0], helper[1])
+          end
+          @@subclasses << subclass
         end
-        @@subclasses << subclass
       end
 
       def initialize(object_name, object, template, options, &proc)
