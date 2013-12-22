@@ -160,27 +160,14 @@ module Formster
 
         class_eval helper_code
       end
-      
-      # def fieldset(title = '', &block)
-      #   html  = "<fieldset>"
-      #   html << @template.content_tag(:legend, title) if title
-      #   html << "<ol>"
-      #   html << @template.capture(&block) if block_given?
-      #   html << "</ol>"
-      #   html << "</fieldset>"
-      #   html.html_safe
-      # end
-      
-      # def item(options = {}, &block)
-      #   html  = "<li>\n"
-      #   html << "  <label>#{options[:label]}</label>\n" if options[:label]
-      #   html << "  <div class='form-input'>\n"
-      #   html << @template.capture(&block) if block_given?
-      #   html << "    <p class='note'>#{options[:note]}</p>\n" if options[:note]
-      #   html << "  </div>\n"
-      #   html << "</li>\n"
-      #   html.html_safe
-      # end
+
+      def item(options = {}, &block)
+        html  = "<div class='form-group'>\n"
+        html << "  <label>#{options[:label]}</label>\n" if options[:label]
+        html << @template.capture(&block) if block_given?
+        html << "</div>\n"
+        html.html_safe
+      end
       
       # def buttons
       #   @template.buttons
