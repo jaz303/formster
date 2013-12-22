@@ -120,7 +120,7 @@ module Formster
               lbl = options.delete(:label) || args[0].to_s.humanize
 
               if options.delete(:inline)
-                html << "<label class='checkbox-inline'>"
+                html  = "<label class='checkbox-inline'>"
                 html << naked_#{helper}(*args, &block)
                 html << lbl
                 html << "</label>"
@@ -138,7 +138,7 @@ module Formster
               lbl = options.delete(:label) || args[0].to_s.humanize
 
               if options.delete(:inline)
-                html << "<label class='radio-inline'>"
+                html  = "<label class='radio-inline'>"
                 html << naked_#{helper}(*args, &block)
                 html << lbl
                 html << "</label>"
